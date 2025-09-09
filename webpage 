@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Node structure for each web page
+struct Node {
+    char url[100];
+    struct Node* prev;
+    struct Node* next;
+};
+
+struct Node* current = NULL; // current page
+
+// Function to visit a new page
+void visitNewPage(char* url) {
+    // Create a new node
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(newNode->url, url);
+    newNode->next = NULL;
+    newNode->prev = current;
+
+    // If there is forward history, delete it
+    if (current != NULL) {
+        struct Node* temp = current->next;
+        while (temp != NULL) {
+            struct Node* toDelete = temp;
+            temp = temp->next;
+            free(toDelete);
+        }
+        current->next = newNode;
+    }
+
+    // Move current to newNode
+    current = newNode;
+
+    printf("Visited: %s\n", current->url);
+}
+
+// Function to go back
+void goBack() {
+    if (current == NULL || current->prev == NULL) {
+        printf("Cannot go back!\n");
+    } else {
+        current = current->prev;
+        printf("Moved back to: %s\n", current->url);
+    }
+}
+
+// Function to go forward
+void goForward() {
+    if (current == NULL || current->next == NULL) {
+        printf("Cannot go forward!\n");
+    } else {
+        current = current->next;
+        printf("Moved forward to: %s\n", current->url);
+    }
+}
+
+// Function to display current page
+void displayCurrentPage() {
+    if (current == NULL) {
+        printf("No page visited yet!\n");
+    } else {
+        printf("Current page: %s\n", current->url);
+    }
+}
+
+// Main function
+int main() {
+    int choice;
+    char url[100];
+
+    while (1) {
+        printf("\n--- Browser Navigation ---\n");
+        printf("1. Visit new page\n");
+        printf("2. Go back\n");
+        printf("3. Go forward\n");
+        printf("4. Display current page\n");
+        printf("5. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter URL: ");
+                scanf("%s", url);
+                visitNewPage(url);
+                break;
+            case 2:
+                goBack();
+                break;
+            case 3:
+                goForward();
+                break;
+            case 4:
+                displayCurrentPage();
+                break;
+            case 5:
+                printf("Exiting navigation...\n");
+                exit(0);
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+    return 0;
+}
