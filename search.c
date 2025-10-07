@@ -91,15 +91,6 @@ Node* deleteNode(Node* root, int data) {
     return root;
 }
 
-// Inorder traversal (for testing)
-void inorder(Node* root) {
-    if (root != NULL) {
-        inorder(root->left);
-        printf("%d ", root->data);
-        inorder(root->right);
-    }
-}
-
 // Main function to demonstrate the BST
 int main() {
     Node* root = NULL;
@@ -107,7 +98,7 @@ int main() {
     Node* found;
 
     while (1) {
-        printf("\n1. Insert\n2. Search\n3. Delete\n4. Inorder traversal\n5. Exit\n");
+        printf("\n1. Insert\n2. Search\n3. Delete\n4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -137,12 +128,6 @@ int main() {
                 break;
 
             case 4:
-                printf("Inorder traversal: ");
-                inorder(root);
-                printf("\n");
-                break;
-
-            case 5:
                 printf("Exiting...\n");
                 exit(0);
 
